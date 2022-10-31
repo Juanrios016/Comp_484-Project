@@ -11,11 +11,18 @@ import sys
 from pyboy import PyBoy, WindowEvent
 import json
 
-pyboy = PyBoy('ROMs/Super Mario Land.gb')
-while not pyboy.tick():
-    pass
-pyboy.stop()
 
+
+classes = 10
+batch_size = 64
+population = 5
+generations = 5
+threshold = 100000
+
+
+games = 800
+time_h = 0
+lucro = 0
 class environment:
     def __init__(self):
         #setup to run the game
@@ -52,7 +59,7 @@ class environment:
         assert self.mario.lives_left == 2
         
         state_full = np.asarray(self.mario.game_area())
-        np.append(state_full, self.mario.level_progress)
+        # np.append(state_full, self.mario.level_progress)  #broken rn with current lazy
         
         return state_full
     
@@ -75,9 +82,65 @@ class environment:
         return action, self.time
     
     
+class Network():
+    
+    def __init__(self):
+        self.actions = []
+        self.generation = 0
         
+        for i in range(games):
+            self.action = random.randint(0, 5)
+            self.actions.append(self.action)
+        self.lucro = 0
         
-
-
+    def get_action(self):
+        return self.actions
+    
+    def set_actions(self, actions, lucro):
+        self.actions = actions
+        self.lucro = lucro
+        return self.lucro
+    
+    
+def main():
+    network = Network()
+    env = environment()
+    state_size = env.state_size
+    action_size = env.action_size
+    state = env.reset()
+    state = np.reshape(state, [1, state_size])
+    actions = network.get_action()
+    
+    for act in actions:
+        try:
+            filteredMario = [x for x in list(state[0]) if (x > 10 and x < 30)]
+            
+            index_mario = list(state[0]).index(filteredMario[0])
+            feet_val = state[0][index_mario + 20]
+            
+        except:
+            break
+    
+        act, tempo = env.step(act)
+        
+        state = np.asarray(env.mario.game_area())
+        position = env.mario.level_progress
+        state = np.reshape(state, [1, state_size])
+        
+        i = 0
+        
+        while feet_val <= 350:
+            env.pyboy.tick()
+            i += 1
+            if i > 60:
+                break
+        
+        if feet_val >= 350:
+            tempo = 2
+            for _ in range(tempo):
+                env.pyboy.tick()
+        
+if __name__ == '__main__':
+    main()
 
     
