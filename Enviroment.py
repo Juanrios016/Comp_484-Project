@@ -34,7 +34,6 @@ class Environment:
         """Resets game"""
         self.mario.reset_game()
         self.done = False
-        self.mario.fitness == 0
         self.pyboy.tick()
         assert self.mario.lives_left == 2
         state_full = np.asarray(self.mario.game_area())
@@ -124,7 +123,6 @@ class Environment:
         elif action == 15:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
             self.time = 5
-        return action, self.time
 
     def releaseStep(self, action):
         """Releases current Mario's action based on MarioBrain's input"""

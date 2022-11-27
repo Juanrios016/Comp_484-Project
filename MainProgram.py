@@ -23,13 +23,14 @@ def main():
     allscores = [] #for testing to se if fitness score improves for each generation
 
     env = Environment() # using only one enviroment to run enverything
-    env.pyboy.set_emulation_speed(0)
+    env.pyboy.set_emulation_speed(0) 
 
     for l in range(3): # do 3 gen so far
         for p in range(5): # 5 agents for each gen
-            state = env.reset()
+            
             currMario = intitialPopualation[p]
             state_size = env.state_size
+            state = env.reset()
             state = np.reshape(state, [1, state_size])
             actions = currMario.get_actions()
 
@@ -39,14 +40,15 @@ def main():
                     index_mario = list(state[0]).index(filteredMario[0])
                     feet_val = state[0][index_mario + 20]
                 except:
-                    break              
-                
+                    break   
+                           
+                env.step(act)
+
                 state = np.asarray(env.mario.game_area())
                 state = np.reshape(state, [1, state_size])
                 
                 # ------ Rendering part -----#
                 i = 0
-                act = env.step(act)
                 env.render(i, feet_val, env)
                 env.releaseStep(act)
                 env.render(i, feet_val, env)
