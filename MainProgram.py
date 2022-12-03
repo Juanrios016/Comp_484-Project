@@ -30,31 +30,51 @@ def main():
             
             currMario = intitialPopualation[p]
             state_size = env.state_size
-            state = env.reset()
-            state = np.reshape(state, [1, state_size])
+            env.reset()
+            #state = np.reshape(state, [1, state_size])
             actions = currMario.get_actions()
 
             for act in actions:
+                '''
                 try:
                     filteredMario = [x for x in list(state[0]) if (x > 10 and x < 30)]
                     index_mario = list(state[0]).index(filteredMario[0])
                     feet_val = state[0][index_mario + 20]
                 except:
                     break   
-                           
-                env.step(act)
-
-                state = np.asarray(env.mario.game_area())
-                state = np.reshape(state, [1, state_size])
+                '''    
+                #state = np.asarray(env.mario.game_area())
+                #state = np.reshape(state, [1, state_size])
                 
                 # ------ Rendering part -----#
                 i = 0
-                env.render(i, feet_val, env)
+                
+                feet_val = 0
+                #env.render(i, feet_val, env)
+
+                while feet_val <= 350:
+                    env.pyboy.tick()
+                    print(np.asarray(env.mario.game_area()))
+                    i += 1
+                    if i > 60:
+                        break
+                
+                if feet_val >= 350:
+                    tempo = 2
+                    for _ in range(tempo):
+                        env.pyboy.tick()
+                env.step(act)
+
+                
                 env.releaseStep(act)
-                env.render(i, feet_val, env)
+                
+                #env.render(i, feet_val, env)
+
                 
                 position = env.mario.level_progress # for testing
-                fitness = env.mario.fitness # for testing
+                fitness = env.mario.fitness
+                
+                
 
             print("fitness: ", fitness) # for testing
             print("position: ", position) # for testing
@@ -62,7 +82,7 @@ def main():
             trials.append([marioNumber, actions, fitness])# for testing
             
             parents.setParents(currMario, fitness)
-            state = env.reset() 
+            #state = env.reset() 
 
         parent1, parent2 = parents.getParents()
         intitialPopualation = parents.computeNextGen(parent1, parent2)

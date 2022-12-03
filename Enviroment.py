@@ -40,8 +40,9 @@ class Environment:
         # np.append(state_full, self.mario.level_progress)  #broken rn with current lazy
         #return state_full
 
-    def render(self, i, feet_val, env):
+    def render(self, i, env):
         """Function that runs the game """
+        pass
         while feet_val <= 350:
             env.pyboy.tick()
             i += 1
