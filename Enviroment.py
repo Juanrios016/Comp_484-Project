@@ -38,7 +38,7 @@ class Environment:
         assert self.mario.lives_left == 2
         state_full = np.asarray(self.mario.game_area())
         # np.append(state_full, self.mario.level_progress)  #broken rn with current lazy
-        #return state_full
+        return state_full
 
     def render(self, i, feet_val, env):
         """Function that runs the game """

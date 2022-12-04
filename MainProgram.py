@@ -36,22 +36,29 @@ def main():
 
             for act in actions:
                 try:
-                    filteredMario = [x for x in list(state[0]) if (x > 10 and x < 30)]
+                    filteredMario = [x for x in list(state[0]) if (x > 10 and x < 82)]
                     index_mario = list(state[0]).index(filteredMario[0])
                     feet_val = state[0][index_mario + 20]
+                    # 32 33
+                    # 48 49 this is mushroom mario this is also fire flower mario
+                    # 64 65
+                    # 66 67 this is ducked mushroom mario
                 except:
-                    break   
+                    print("error")   
                            
-                env.step(act)
+                # env.step(act)
 
                 state = np.asarray(env.mario.game_area())
                 state = np.reshape(state, [1, state_size])
                 
                 # ------ Rendering part -----#
                 i = 0
-                env.render(i, feet_val, env)
-                env.releaseStep(act)
-                env.render(i, feet_val, env)
+                env.pyboy.tick()
+                print(np.asarray(env.mario.game_area()))
+                # env.render(i, feet_val, env)
+                # env.releaseStep(act)
+                # env.render(i, feet_val, env)
+                env.pyboy.tick()
                 
                 position = env.mario.level_progress # for testing
                 fitness = env.mario.fitness # for testing
