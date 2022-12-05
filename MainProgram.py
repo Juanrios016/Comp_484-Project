@@ -25,7 +25,7 @@ def main():
     env = Environment() # using only one enviroment to run enverything
     env.pyboy.set_emulation_speed(0) 
 
-    for l in range(3): # do 3 gen so far
+    for l in range(10): # do 3 gen so far
         for p in range(5): # 5 agents for each gen
             
             currMario = intitialPopualation[p]
@@ -44,7 +44,9 @@ def main():
                     # 64 65
                     # 66 67 this is ducked mushroom mario
                 except:
-                    break  
+                    print("error", np.asarray(env.mario.game_area()))
+                    break
+                    
                            
                 env.step(act)
 
