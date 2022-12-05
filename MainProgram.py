@@ -54,22 +54,26 @@ def main():
                 # ------ Rendering part -----#
                 i = 0
                 # env.pyboy.tick()
-                print(np.asarray(env.mario.game_area()))
+                # print(np.asarray(env.mario.game_area()))
+                print(env.mario.level_progress)
                 env.render(i, feet_val, env)
                 env.releaseStep(act)
                 env.render(i, feet_val, env)
                 # env.pyboy.tick()
                 
-                position = env.mario.level_progress # for testing
-                fitness = env.mario.fitness # for testing
-
-            print("fitness: ", fitness) # for testing
+                position = env.mario._level_progress_max # for testing
+                fitness = env.getFitness() # for testing
+            
+            currMario.saveActions("marioActions" + str(marioNumber) + ".txt") # for testing
+            print("fitness: ", env.getFitness()) # for testing
             print("position: ", position) # for testing
             marioNumber +=1 # for testing
             trials.append([marioNumber, actions, fitness])# for testing
             
             parents.setParents(currMario, fitness)
-            state = env.reset() 
+            state = env.reset()
+
+
 
         parent1, parent2 = parents.getParents()
         intitialPopualation = parents.computeNextGen(parent1, parent2)

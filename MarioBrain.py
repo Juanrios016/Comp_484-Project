@@ -20,6 +20,14 @@ class MarioBrain():
         """Changes a single chromose"""
         self.actions [pos] = random.randint(0, 15)
 
+    def saveActions(self, fileName):
+        """Saves the actions array to a file"""
+        np.savetxt(fileName, self.actions, fmt='%d', delimiter=',')
+
+    def loadActions(self, fileName):
+        """Loads the actions array from a file"""
+        self.actions = np.loadtxt(fileName, delimiter=',')
+
 
     
         

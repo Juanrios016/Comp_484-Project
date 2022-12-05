@@ -187,3 +187,9 @@ class Environment:
             self.pyboy.send_input(WindowEvent.RELEASE_ARROW_DOWN)
             self.time = 5
     
+    def getFitness(self):
+        """Returns Mario's fitness"""
+        return self.mario._level_progress_max
+
+    
+    
