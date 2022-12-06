@@ -9,8 +9,10 @@ class GenerateGeneration:
         """sets up the parents and their fitness score """
         self.parent1 = False
         self.parent1Fitness = 0
+        self.parent1Chromosome = 0
         self.parent2 = False
         self.parent2Fitness = 0
+        self.parent2Chromosome = 0
 
     def getParents(self):
         """Return parents (two Marios) with highest fitness score"""
@@ -20,16 +22,19 @@ class GenerateGeneration:
         """Return parents'/brains' fitness score"""
         return self.parent1Fitness, self.parent2Fitness
 
-    def setParents(self, candidate, candidateFitness):
+    def setParents(self, candidate, candidateFitness, chromosome):
         """Sets parents based on fitness score"""
         if candidateFitness > self.parent1Fitness :
             self.parent2 = self.parent1
             self.parent2Fitness = self.parent1Fitness
+            self.parent2Chromosome =self.parent1Chromosome
             self.parent1 = candidate
             self.parent1Fitness = candidateFitness
+            self.parent1Chromosome = chromosome
         elif candidateFitness > self.parent2Fitness:
             self.parent2 = candidate
             self.parent2Fitness = candidateFitness
+            self.parent2Chromosome = chromosome
 
     def crossover(self, parent1, parent2):
         """Generates a child from parents chromosomes (Mario's movements) with the option
