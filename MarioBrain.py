@@ -21,7 +21,7 @@ class MarioBrain():
         self.actions [pos] = random.randint(0, 15)
 
     def saveActions(self, fileName):
-        """Saves the actions array to a file"""
+        """Saves the actions array to a file in a new folder called 'actions'"""
         np.savetxt(fileName, self.actions, fmt='%d', delimiter=',')
 
     def loadActions(self, fileName):

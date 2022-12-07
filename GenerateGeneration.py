@@ -1,6 +1,7 @@
 from MarioBrain import MarioBrain
 import random
 
+mutationChance = 0.2
 class GenerateGeneration:
     """ This class is responsible for the creation of new generation of Marios
     for the emulator based on previous generations"""
@@ -35,6 +36,10 @@ class GenerateGeneration:
             self.parent2 = candidate
             self.parent2Fitness = candidateFitness
             self.parent2Chromosome = chromosome
+            
+    def mutate(self, child, position):
+        """Mutates a single chromosome in a child"""
+        child.actions[position] = random.randint(0, 15)
 
     def crossover(self, parent1, parent2):
         """Generates a child from parents chromosomes (Mario's movements) with the option
@@ -46,12 +51,32 @@ class GenerateGeneration:
             if keepParChrom: 
                 child.actions[i] = parChromosome
         return child
+    
+    def crossoverV2(self, parent1, parent2):
+        """Generates a child from parents chromosomes (Mario's movements)"""
+        child = MarioBrain()
+        for i in range(len(child.actions)):
+            parChromosome = random.choice([parent1.actions[i], parent2.actions[i]])
+            keepParChrom = random.choice([True, False])
+            if keepParChrom: 
+                child.actions[i] = parChromosome
+            if random.random() < mutationChance:
+                self.mutate(child, i)
+        return child
 
     def computeNextGen(self, p1, p2):
         """Computes a new generation of 5 Marios"""
         nextGen = []
         for i in range(5):
             child = self.crossover(p1, p2)
+            nextGen.append(child)
+        return nextGen
+    
+    def mutateComputeNextGen(self, p1, p2):
+        """Computes a new generation of 5 Marios with the option of mutating a chromosome"""
+        nextGen = []
+        for i in range(10):
+            child = self.crossoverV2(p1, p2)
             nextGen.append(child)
         return nextGen
 

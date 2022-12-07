@@ -2,6 +2,7 @@ import numpy as np
 import sys
 from pyboy import PyBoy, WindowEvent
 
+fitnessScore = 0
 class Environment:
     def __init__(self):
         #setup to run the game
@@ -22,6 +23,7 @@ class Environment:
         assert self.mario.lives_left == 2
         assert self.mario.world == (1, 1)
         assert self.mario.fitness == 0
+        assert self.mario._level_progress_max == 0
         
         #statespace
         self.action_size = 5
@@ -32,6 +34,7 @@ class Environment:
         
     def reset(self):
         """Resets game"""
+        self.mario._level_progress_max = 0
         self.mario.reset_game()
         self.done = False
         self.pyboy.tick()
@@ -189,7 +192,9 @@ class Environment:
     
     def getFitness(self):
         """Returns Mario's fitness"""
-        return self.mario._level_progress_max
+        global fitnessScore
+        fitnessScore = self.mario.level_progress
+        return fitnessScore
 
     
     
