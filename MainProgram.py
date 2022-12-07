@@ -25,7 +25,7 @@ def main():
     env = Environment() # using only one enviroment to run enverything
     env.pyboy.set_emulation_speed(0) 
 
-    for l in range(4): # do 3 gen so far
+    for l in range(30): # do 3 gen so far
         for p in range(5): # 5 agents for each gen
             
             currMario = intitialPopualation[p]
@@ -34,6 +34,8 @@ def main():
             state = np.reshape(state, [1, state_size])
             actions = currMario.get_actions()
             actNum = 0
+            lastScore = []
+
 
             for act in actions:
                 try:
@@ -56,23 +58,31 @@ def main():
                 i = 0
                 # env.pyboy.tick()
                 # print(np.asarray(env.mario.game_area()))
-                print(env.mario.level_progress)
+                #print(env.mario.level_progress)
+                lastScore.append(env.mario.level_progress)
                 env.render(i, feet_val, env)
                 env.releaseStep(act)
                 env.render(i, feet_val, env)
                 # env.pyboy.tick()
                 
-                position = env.mario._level_progress_max # for testing
-                fitness = env.getFitness() # for testing
+                
+                position = env.mario.level_progress # for testing
+                #env.setFitness(actNum)
+                fitness = env.mario.level_progress # for testing
+                
                 actNum += 1
-            
-            currMario.saveActions("marioActions" + str(marioNumber) + ".txt") # for testing
-            print("fitness: ", env.getFitness()) # for testing
-            print("position: ", position) # for testing
+                
+
+            parents.setParents(currMario, lastScore[len(lastScore)-1], actNum)
+            #currMario.saveActions("marioActions" + str(marioNumber) + ".txt") # for testing
+            print("fitness: ", lastScore[len(lastScore)-1], "chromosome num: ", actNum) # for testing
+            #print("env fitness: ", env.mario.fitness)
+            #print("position: ", position) # for testing
             marioNumber +=1 # for testing
-            trials.append([marioNumber, actions, fitness, actNum])# for testing
+            trials.append([marioNumber, lastScore[len(lastScore)-1], actNum])# for testing
             
-            parents.setParents(currMario, fitness, actNum)
+            
+            env.mario.fitness
             state = env.reset()
 
 
@@ -80,14 +90,18 @@ def main():
         parent1, parent2 = parents.getParents()
         intitialPopualation = parents.computeNextGen(parent1, parent2)
 
-        print(parents.getFitnessScores()) # for testing
-        for trial in trials: # for testing
-            print(trial[0], trial[2], trial[3])
+        print(parents.getFitnessScores(), "parent 1 chromosome pos: ", parents.parent1Chromosome, " parent 2 chromosome pos: ", parents.parent2Chromosome) # for testing
+        #for trial in trials: # for testing
+        #    print(trial[0], trial[2], trial[3])
         allscores.append([parents.parent1Fitness, parents.parent1Chromosome, parents.parent2Fitness, parents.parent2Chromosome]) # for testing
 
         parents.resetParents()
+        print("---------------------------------------------")
 
+    #for trial in trials: # for testing
+    #        print(trial)
     print(allscores) # for testing
+    
 
 if __name__ == '__main__':
     main()

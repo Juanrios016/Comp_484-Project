@@ -27,6 +27,8 @@ class MarioBrain():
     def loadActions(self, fileName):
         """Loads the actions array from a file"""
         self.actions = np.loadtxt(fileName, delimiter=',')
+    
+    
 
 
     

@@ -31,12 +31,39 @@ class GenerateGeneration:
             self.parent1 = candidate
             self.parent1Fitness = candidateFitness
             self.parent1Chromosome = chromosome
+
+        elif candidateFitness == self.parent1Fitness and chromosome < self.parent1Chromosome:
+            self.parent2 = self.parent1
+            self.parent2Fitness = self.parent1Fitness
+            self.parent2Chromosome =self.parent1Chromosome
+            self.parent1 = candidate
+            self.parent1Fitness = candidateFitness
+            self.parent1Chromosome = chromosome
+
         elif candidateFitness > self.parent2Fitness:
             self.parent2 = candidate
             self.parent2Fitness = candidateFitness
             self.parent2Chromosome = chromosome
-
-    def crossover(self, parent1, parent2):
+        elif candidateFitness == self.parent2Fitness and chromosome <self.parent2Chromosome:
+            self.parent2 = candidate
+            self.parent2Fitness = candidateFitness
+            self.parent2Chromosome = chromosome
+        '''
+        elif candidateFitness > self.parent1Fitness and chromosome < self.parent1Chromosome:
+            self.parent2 = self.parent1
+            self.parent2Fitness = self.parent1Fitness
+            self.parent2Chromosome =self.parent1Chromosome
+            self.parent1 = candidate
+            self.parent1Fitness = candidateFitness
+            self.parent1Chromosome = chromosome
+            '''
+        '''
+        elif candidateFitness > self.parent2Fitness and chromosome <self.parent2Chromosome:
+            self.parent2 = candidate
+            self.parent2Fitness = candidateFitness
+            self.parent2Chromosome = chromosome
+        '''
+    def crossover1(self, parent1, parent2):
         """Generates a child from parents chromosomes (Mario's movements) with the option
         of not changing any current chromosome that comes from initializing a new brain"""
         child = MarioBrain()
@@ -47,11 +74,86 @@ class GenerateGeneration:
                 child.actions[i] = parChromosome
         return child
 
+    def crossover2(self, parent1, parent2):
+        child = MarioBrain()
+        choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])
+        maxNum = max([self.parent1Chromosome, self.parent2Chromosome])
+        partition = random.randint(0,choice)
+
+        for i in range(0,partition):
+            child.actions[i] = parent1.actions[i]
+        for i in range(partition, maxNum):
+            child.actions[i] = parent2.actions[i]
+
+        return child
+
+    def crossover3(self, parent1, parent2):
+        child = MarioBrain()
+        choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])   
+
+        for i in range(choice):
+            parChromosome = random.choice([parent1.actions[i], parent2.actions[i]])
+            
+            child.actions[i] = parChromosome
+        return child    
+
+    def crossover4(self, parent1, parent2):
+        child = MarioBrain()
+        choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])
+        partition = random.randint(0, choice)
+
+        for i in range(0,partition):
+            child.actions[i] = parent1.actions[i]
+        for i in range(partition, len(parent1.actions)):
+            child.actions[i] = parent2.actions[i]
+
+        return child
+
+    def crossover5(self, parent1, parent2):
+        """Generates a child from parents chromosomes (Mario's movements) with the option
+        of not changing any current chromosome that comes from initializing a new brain"""
+        child = MarioBrain()
+
+        choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])
+        partition = random.randint(0, choice)
+        changesNum = random.randint(0, choice)
+
+
+        for i in range(choice):
+            parChromosome = random.choice([parent1.actions[i], parent2.actions[i]])
+            notKeepParChrom = random.choice([True, False])
+            if notKeepParChrom and i != changesNum: 
+                child.actions[i] = parChromosome
+        return child
+
+    def crossover6(self, parent1, parent2):
+        """Generates a child from parents chromosomes (Mario's movements) with the option
+        of not changing any current chromosome that comes from initializing a new brain"""
+        child = MarioBrain()
+
+        choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])
+        partition = random.randint(0, choice)
+        changesNum = random.randint(0, choice)
+
+
+        for i in range(choice):
+            parChromosome = random.choice([parent1.actions[i], parent2.actions[i]])
+            keepParChrom = random.choice([True, False])
+            if keepParChrom == False and i < changesNum:
+                continue
+            elif keepParChrom and i >= changesNum: 
+                child.actions[i] = parChromosome
+            
+        return child
+
+
+    
+
     def computeNextGen(self, p1, p2):
         """Computes a new generation of 5 Marios"""
         nextGen = []
         for i in range(5):
-            child = self.crossover(p1, p2)
+            child = self.crossover3(p1, p2)
             nextGen.append(child)
         return nextGen
 

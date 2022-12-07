@@ -37,6 +37,8 @@ class Environment:
         self.pyboy.tick()
         assert self.mario.lives_left == 2
         state_full = np.asarray(self.mario.game_area())
+        self.mario.fitness == 0
+        #assert self.mario.fitness == 0
         # np.append(state_full, self.mario.level_progress)  #broken rn with current lazy
         return state_full
 
@@ -187,9 +189,12 @@ class Environment:
             self.pyboy.send_input(WindowEvent.RELEASE_ARROW_DOWN)
             self.time = 5
     
-    def getFitness(self):
+    def getFitnessScore(self):
         """Returns Mario's fitness"""
-        return self.mario._level_progress_max
+        return self.mario.fitness
+
+    def setFitness(self, numChromoses):
+        self.mario.fitness = self.mario._level_progress_max 
 
     
     
