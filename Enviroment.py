@@ -66,127 +66,83 @@ class Environment:
         Also, we might want to change the time for each input because that seems affects
         how fast mario performs each movement.
         """
+        
         if action == 0:
-            self.time = 5
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A) #jump
+            self.time = 1
         elif action == 1:
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.time = 50 
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT) #move right
+            self.time = 5
         elif action == 2:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B) #run/fireball
             self.time = 50
         elif action == 3:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
-            self.time = 5
-        elif action == 4:
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 50
-        elif action == 5:
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B) #fast jump
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
+            self.time = 1
+        elif action == 4:
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B) #fast jump right
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
+            self.time = 1
+        elif action == 5:
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B) #run right
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
             self.time = 50
         elif action == 6:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B) #run left
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
             self.time = 50
         elif action == 7:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 50
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B) #fast jump left
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
+            self.time = 1
         elif action == 8:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 50
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT) #move left
+            self.time = 5
         elif action == 9:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 50
-        elif action == 10:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 50
-        elif action == 11:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 50
-        elif action == 12:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN) #crouch
             self.time = 5
-        elif action == 13:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.time = 50
-        elif action == 14:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.time = 50
-        elif action == 15:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
-            self.time = 5
+        
 
     def releaseStep(self, action):
         """Releases current Mario's action based on MarioBrain's input"""
-        if action == 0:
-            self.time = 5
-        elif action == 1:
+        if action ==0:
             self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
             self.time = 50 
-        elif action == 2:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
-            self.time = 50
-        elif action == 3:
+        elif action == 1:
             self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
             self.time = 5
+        elif action == 2:
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
+            self.time = 1
+        elif action == 3:
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
+            self.time = 1
         elif action == 4:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
             self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
-            self.time = 50
+            self.time = 1
         elif action == 5:
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
             self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
-            self.time = 50
+            self.time = 1
         elif action == 6:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
+            self.time = 1
+        elif action == 7:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
             self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
             self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
-            self.time = 50
-        elif action == 7:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
-            self.time = 50
+            self.time = 1
         elif action == 8:
             self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
-            self.time = 50
-        elif action == 9:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
-            self.time = 50
-        elif action == 10:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_DOWN)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
-            self.time = 50
-        elif action == 11:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_DOWN)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
-            self.time = 50
-        elif action == 12:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
             self.time = 5
-        elif action == 13:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
-            self.time = 50
-        elif action == 14:
-            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_DOWN)
-            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
-            self.time = 50
-        elif action == 15:
+        elif action == 9:
             self.pyboy.send_input(WindowEvent.RELEASE_ARROW_DOWN)
             self.time = 5
     
