@@ -5,8 +5,11 @@ from GenerateGeneration import GenerateGeneration
 from Enviroment import Environment
 
 
+mutationChance = 0.2
 possibleActions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-weights = [.12, .15, .01, .02, .32, .2, .05, .05, .03, .05]
+weights = [.1, .1, .1, .1, .1, .1, .1, .1, .1, .1]
+rightWeighted = [.15, .2, .02, .03, .25, .17, .07, .05, .05, .01]
+weightsModified = [.12, .15, .01, .02, .27, .15, .1, .1, .03, .05]
 
 # level complete at position 2601
 def individualEnvBehavior():
@@ -41,7 +44,7 @@ def main():
         print("========================================")
         print("Generation: ", generation)
         for p in range(10): # 5 agents for each gen
-            print("Mario: ", p)
+            # print("Mario: ", p)
             fitness = 0
             currMario = intitialPopualation[p]
             state_size = env.state_size
@@ -60,7 +63,7 @@ def main():
                     # 66 67 this is ducked mushroom mario
                 except:
                     fitness = env.mario._level_progress_max
-                    print("mario not found")
+                    # print("mario not found")
                     # print(np.asarray(env.mario.game_area()))
                     # print(fitness)
                     # print('dead')
@@ -97,9 +100,8 @@ def main():
         allscores.append([parents.parent1Fitness, parents.parent1Chromosome, parents.parent2Fitness, parents.parent2Chromosome]) # for testing
         parents.resetParents()
         generation += 1
+        print(allscores) # for testing
         print("---------------------------------------------")
-
-    print(allscores) # for testing
 
 if __name__ == '__main__':
     main()

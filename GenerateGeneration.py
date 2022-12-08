@@ -5,6 +5,7 @@ import numpy as np
 mutationChance = 0.2
 possibleActions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 weights = [.1, .1, .1, .1, .1, .1, .1, .1, .1, .1]
+rightWeighted = [.15, .2, .02, .03, .25, .17, .07, .05, .05, .01]
 weightsModified = [.12, .15, .01, .02, .27, .15, .1, .1, .03, .05]
 class GenerateGeneration:
     """ This class is responsible for the creation of new generation of Marios
@@ -77,10 +78,6 @@ class GenerateGeneration:
             child.actions[i] = parent1.actions[i]
         for i in range(partition, maxNum):
             child.actions[i] = parent2.actions[i]
-        
-        for i in range(1000):
-            if random.random() <= mutationChance:
-                self.mutate(child, i)
 
         return child
 

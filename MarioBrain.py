@@ -1,8 +1,11 @@
 import random
 import numpy as np
 
+mutationChance = 0.2
 possibleActions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-weights = [.12, .15, .01, .02, .32, .2, .05, .05, .03, .05]
+weights = [.1, .1, .1, .1, .1, .1, .1, .1, .1, .1]
+rightWeighted = [.15, .2, .02, .03, .25, .17, .07, .05, .05, .01]
+weightsModified = [.12, .15, .01, .02, .27, .15, .1, .1, .03, .05]
 class MarioBrain():
     """ This class computes a single Mario Brain """
 
@@ -10,7 +13,7 @@ class MarioBrain():
         """Creates an array of size 1000 with integers between 0 and 15 inclusive
         that represents the different movements for Mario"""
         self.actions = np.arange(1000) #array that holds Mario movements
-        self.actions = np.random.choice(possibleActions, 1000, p=weights) #randomly assigns actions to the array
+        self.actions = np.random.choice(possibleActions, 1000, p=rightWeighted) #randomly assigns actions to the array
         
     def get_actions(self):
         """Returns an array of integers between 0 and 15 inclusive"""
