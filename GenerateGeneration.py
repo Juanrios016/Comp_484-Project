@@ -4,8 +4,10 @@ import numpy as np
 
 mutationChance = 0.25
 possibleActions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+onlyMoveRight = [1, 4, 5]
+onlyMoveRightWeighted = [.2, .6, .2]
 weights = [.1, .1, .1, .1, .1, .1, .1, .1, .1, .1]
-rightWeighted = [.15, .2, .02, .03, .25, .17, .07, .05, .05, .01]
+rightWeighted = [.17, .2, .02, .03, .33, .17, .03, .02, .02, .01]
 weightsModified = [.12, .15, .01, .02, .27, .15, .1, .1, .03, .05]
 class GenerateGeneration:
     """ This class is responsible for the creation of new generation of Marios
@@ -116,6 +118,32 @@ class GenerateGeneration:
                 self.mutate(child, i)
         return child
     
+    def crossover90Percent(self, parent1, parent2):
+        child = MarioBrain()
+        choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])
+        percentInt = int(choice * 0.9)
+        for i in range(0, percentInt):
+            child.actions[i] = parent1.actions[i]
+        for i in range(percentInt, len(parent1.actions)):
+            child.actions[i] = parent2.actions[i]
+        for i in range(percentInt, len(child.actions)):
+            if random.random() < mutationChance:
+                self.mutate(child, i)
+        return child
+    
+    def crossover80PercentOnlyMoveRight(self, parent1, parent2):
+        child = MarioBrain()
+        choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])
+        percentInt = int(choice * 0.8)
+        for i in range(0, percentInt):
+            child.actions[i] = parent1.actions[i]
+        for i in range(percentInt, len(parent1.actions)):
+            child.actions[i] = parent2.actions[i]
+        for i in range(percentInt, len(child.actions)):
+            if random.random() < mutationChance:
+                self.mutate(child, i)
+        return child    
+    
     def crossover3(self, parent1, parent2):
         child = MarioBrain()
         choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])   
@@ -201,6 +229,13 @@ class GenerateGeneration:
         nextGen = []
         for i in range(10):
             child = self.crossover80Percent(p1, p2)
+            nextGen.append(child)
+        return nextGen
+    
+    def computeNextGenOnlyMoveRight(self, p1, p2):
+        nextGen = []
+        for i in range(10):
+            child = self.crossover80PercentOnlyMoveRight(p1, p2)
             nextGen.append(child)
         return nextGen
     
