@@ -32,6 +32,7 @@ class Environment:
         
     def reset(self):
         """Resets game"""
+        self.mario._level_progress_max = 0
         self.mario.reset_game()
         self.done = False
         self.pyboy.tick()
@@ -69,63 +70,111 @@ class Environment:
             self.time = 5
         elif action == 1:
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.time = 30
+            #self.time = 30
         elif action == 2:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.time = 30
+            #self.time = 30
         elif action == 3:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
-            self.time = 5
+            #self.time = 5
         elif action == 4:
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 30
+            #self.time = 30
         elif action == 5:
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 30
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
+            #self.time = 5
         elif action == 6:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 30
+            #self.time = 30
         elif action == 7:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 30
+            #self.time = 30
         elif action == 8:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
-            self.time = 30
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
+            #self.time = 30
         elif action == 9:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
+            #self.time = 5
+        elif action == 10:
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
+            #self.time = 30
+        '''
+        elif action == 8:
+            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
+            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
+            #self.time = 30
+        
+        elif action == 5:
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
             self.time = 30
+
         elif action == 10:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
             self.time = 30
+        
         elif action == 11:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_B)
             self.time = 30
-        elif action == 12:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
-            self.time = 5
-        elif action == 13:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_LEFT)
-            self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
-            self.time = 30
+        '''
+        '''
         elif action == 14:
             self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
             self.pyboy.send_input(WindowEvent.PRESS_BUTTON_A)
             self.time = 30
-        elif action == 15:
-            self.pyboy.send_input(WindowEvent.PRESS_ARROW_DOWN)
-            self.time = 5
+        '''
 
+    def releaseStep(self, action):
+        if action == 0:
+            self.time = 5
+        elif action == 1:
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
+            #self.time = 30
+        elif action == 2:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
+            #self.time = 30
+        elif action == 3:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
+            #self.time = 5
+        elif action == 4:
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
+            #self.time = 30
+        elif action == 5:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_DOWN)
+            #self.time = 5
+        elif action == 6:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
+            #self.time = 30
+        elif action == 7:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_RIGHT)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
+            #self.time = 30
+        elif action == 8:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_B)
+            #self.time = 30
+        elif action == 9:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
+            #self.time = 5
+        elif action == 10:
+            self.pyboy.send_input(WindowEvent.RELEASE_ARROW_LEFT)
+            self.pyboy.send_input(WindowEvent.RELEASE_BUTTON_A)
+            #self.time = 30
+    '''
     def releaseStep(self, action):
         """Releases current Mario's action based on MarioBrain's input"""
         if action == 0:
@@ -188,6 +237,7 @@ class Environment:
         elif action == 15:
             self.pyboy.send_input(WindowEvent.RELEASE_ARROW_DOWN)
             self.time = 5
+    '''
     
     def getFitnessScore(self):
         """Returns Mario's fitness"""

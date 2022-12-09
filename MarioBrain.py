@@ -7,9 +7,9 @@ class MarioBrain():
     def __init__(self):
         """Creates an array of size 1000 with integers between 0 and 15 inclusive
         that represents the different movements for Mario"""
-        self.actions = np.arange(1000) #array that holds Mario movements
+        self.actions = np.arange(3000) #array that holds Mario movements
         for i in range(self.actions.size): 
-            chromosome = random.randint(0, 15)
+            chromosome = random.randint(0, 10)
             self.actions[i] = chromosome
         
     def get_actions(self):
@@ -18,11 +18,11 @@ class MarioBrain():
 
     def changeChromose(self, pos):
         """Changes a single chromose"""
-        self.actions [pos] = random.randint(0, 15)
+        self.actions [pos] = random.randint(0, 10)
 
     def saveActions(self, fileName):
         """Saves the actions array to a file"""
-        np.savetxt(fileName, self.actions, fmt='%d', delimiter=',')
+        np.savetxt('gen4.0/'+fileName, self.actions, fmt='%d', delimiter=',')
 
     def loadActions(self, fileName):
         """Loads the actions array from a file"""
@@ -34,7 +34,9 @@ class MarioBrain():
     
         
 
-#testing = MarioBrain()
+testing = MarioBrain()
 #k = testing.get_actions()
 
 #print(k[0:50])
+
+

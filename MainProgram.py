@@ -8,7 +8,6 @@ def individualEnvBehavior():
     pass
 
 
-
 def main():
     parents = GenerateGeneration()
     trials = [] # for testing
@@ -23,17 +22,21 @@ def main():
     mario8 = MarioBrain()
     mario9 = MarioBrain()
     mario10 = MarioBrain()
-    #intitialPopualation = [mario1, mario2, mario3, mario4, mario5, mario6, mario7, mario8, mario9, mario10]
+    intitialPopualation = [mario1, mario2, mario3, mario4, mario5, mario6, mario7, mario8, mario9, mario10]
     allscores = [] #for testing to se if fitness score improves for each generation
-
-    mario1.loadActions("Gen75-mario1ActionsFC753chrom131.txt")
-    parents.setParents(mario1, 753, 131)
-    mario2.loadActions("Gen75-mario2ActionsFC691chrom321.txt")
-    parents.setParents(mario2, 691, 321)
+    
+    '''
+    mario1.loadActions("gen4.0\Gen22-mario1ActionsFS1333chrom313.txt")
+    mario2.loadActions("gen4.0\Gen22-mario2ActionsFS1298chrom319.txt")
+    for i in range(len(mario3.actions)):
+        if i < 1000:
+            mario3.actions[i] = mario1.actions [i]
+            mario4.actions[i] = mario2.actions [i]
+    parents.setParents(mario3, 1333, 313)
+    parents.setParents(mario4, 1298, 319)
     parent1, parent2 = parents.getParents()
-
-    intitialPopualation = parents.computeNextGen(parent1, parent2)
-
+    intitialPopualation = parents.nextGen3()
+    '''
     env = Environment() # using only one enviroment to run enverything
     env.pyboy.set_emulation_speed(0) 
     for l in range(250): # do 3 gen so far
@@ -46,7 +49,6 @@ def main():
             state = np.reshape(state, [1, state_size])
             actions = currMario.get_actions()
             actNum = 1
-            lastScore = []
             lastPos = 0
 
             for act in actions:
@@ -60,44 +62,39 @@ def main():
                     # 66 67 this is ducked mushroom mario
                 except:
                     break  
-                lastScore.append((env.mario.level_progress))
-                lastPos = env.mario.level_progress
+                
                 state = np.asarray(env.mario.game_area())
                 state = np.reshape(state, [1, state_size])
+                
                 # ------ Rendering part -----#
                 i = 0
                 env.step(act)
                 env.render(i, feet_val, env)
                 env.releaseStep(act)
                 env.render(i, feet_val, env)
+                lastPos = env.mario._level_progress_max
                 #position = env.mario.level_progress # for testing
-                #fitness = env.mario.level_progress # for testing
+                fitness = (env.mario._level_progress_max)# for testing
                 actNum += 1
 
-            parents.setParents(currMario, lastScore[len(lastScore)-1], actNum)
+            parents.setParents(currMario, fitness, actNum)
             #currMario.saveActions("Gen"+str(l)+"-marioActionsFC"+str(lastPos) + ".txt") # for testing
-            print("fitness: ", lastScore[len(lastScore)-1], "chromosome num: ", actNum, "position: ", lastPos) # for testing
+            print("fitness: ", fitness, "chromosome num: ", actNum, "position: ", lastPos) # for testing
             marioNumber +=1 # for testing
-            trials.append([marioNumber, lastScore[len(lastScore)-1], actNum])# for testing
             state = env.reset()
 
 
 
         parent1, parent2 = parents.getParents()
-        intitialPopualation = parents.computeNextGen(parent1, parent2)
+        intitialPopualation = parents.nextGen3()
 
         # saves parentss from each gen
-        parent1.saveActions("Gen"+str(l)+"-mario1ActionsFC"+str(parents.parent1Fitness) + "chrom" + str(parents.parent1Chromosome) +".txt") # for testing
-        parent2.saveActions("Gen"+str(l)+"-mario2ActionsFC"+str(parents.parent2Fitness) + "chrom" + str(parents.parent2Chromosome) +".txt") # for testing
-
+        parent1.saveActions("Gen"+str(l)+"-mario1ActionsFS"+str(parents.parent1Fitness) + "chrom" + str(parents.parent1Chromosome)  + ".txt") # for testing
+        parent2.saveActions("Gen"+str(l)+"-mario2ActionsFS"+str(parents.parent2Fitness) + "chrom" + str(parents.parent2Chromosome)  + ".txt") # for testing
         print(parents.getFitnessScores(), "parent 1 chromosome pos: ", parents.parent1Chromosome, " parent 2 chromosome pos: ", parents.parent2Chromosome) # for testing
         allscores.append([parents.parent1Fitness, parents.parent1Chromosome, parents.parent2Fitness, parents.parent2Chromosome]) # for testing
-
         parents.resetParents()
         print("---------------------------------------------")
-
-    #for trial in trials: # for testing
-    #        print(trial)
     print(allscores) # for testing
     
 
