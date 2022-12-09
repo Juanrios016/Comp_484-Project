@@ -88,17 +88,21 @@ def main():
             marioNumber +=1 # for testing
             trials.append([marioNumber, actions, fitness, actNum])# for testing
             parents.setParents(currMario, fitness, actNum)
+            # parents.setBestParent(currMario, fitness, actNum)
             state = env.reset()
 
 
 
         parent1, parent2 = parents.getParents()
         intitialPopualation = parents.mutateComputeNextGen(parent1, parent2)
-        print(parents.getFitnessScores(), "parent 1 chromosome pos: ", parents.parent1Chromosome, " parent 2 chromosome pos: ", parents.parent2Chromosome)
+        # print(parents.getFitnessScores(), "parent 1 chromosome pos: ", parents.parent1Chromosome, " parent 2 chromosome pos: ", parents.parent2Chromosome)
+        print("Best Parent: ", parents.bestParentFitness, "Best Parent Chromosome: ", parents.bestParentChromosome)
         # for trial in trials: # for testing
             # print(trial[0], trial[2], trial[3])
+        # allscores.append([parents.bestParentFitness, parents.bestParentChromosome]) # for testing
+        # Appending the fitness score and chromosome of the parents to a list.
         allscores.append([parents.parent1Fitness, parents.parent1Chromosome, parents.parent2Fitness, parents.parent2Chromosome]) # for testing
-        parents.resetParents()
+        # parents.resetParents()
         generation += 1
         print(allscores) # for testing
         print("---------------------------------------------")
