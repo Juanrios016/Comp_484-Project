@@ -24,7 +24,7 @@ class MarioBrain():
 
     def saveActions(self, fileName):
         """Saves the actions array to a file"""
-        np.savetxt('gen1.02DArray'+fileName, self.actions, fmt='%d', delimiter=',')
+        np.savetxt('gene2-2DArray/'+fileName, self.actions, fmt='%d', delimiter=',')
 
     def loadActions(self, fileName):
         """Loads the actions array from a file"""
@@ -46,7 +46,7 @@ k = testing.get_actions()
 print(k[10][1])
 testing.setDistance(10, 566)
 print(testing.getDistance(10))
-print(k[10][1])
 '''
+
 
 

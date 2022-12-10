@@ -25,9 +25,9 @@ class GenerateGeneration:
         """Return parents'/brains' fitness score"""
         return self.parent1Fitness, self.parent2Fitness
 
-    def setParents(self, candidate, candidateFitness, chromosome,):
+    def setParents(self, candidate, candidateFitness, chromosome):
         """Sets parents based on fitness score"""
-        if candidateFitness > self.parent1Fitness :
+        if candidateFitness > self.parent1Fitness - 5:
             self.parent2 = self.parent1
             self.parent2Fitness = self.parent1Fitness
             self.parent2Chromosome =self.parent1Chromosome
@@ -59,123 +59,61 @@ class GenerateGeneration:
             self.parent2 = candidate
             self.parent2Fitness = candidateFitness
             self.parent2Chromosome = chromosome
-            #self.parent2Pos = pos
-    
-    
-     #old versions of crossover 
-    '''
-    def crossover1(self, parent1, parent2):
-        """Generates a child from parents chromosomes (Mario's movements) with the option
-        of not changing any current chromosome that comes from initializing a new brain"""
-        child = MarioBrain()
-        for i in range(len(child.actions)):
-            parChromosome = random.choice([parent1.actions[i], parent2.actions[i]])
-            #keepParChrom = random.choice([True, False])
-            #if keepParChrom: 
-            child.actions[i] = parChromosome
-        return child
 
-    def crossover2(self, parent1, parent2):
-        child = MarioBrain()
-        choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])
-        maxNum = max([self.parent1Chromosome, self.parent2Chromosome])
-        partition = random.randint(0,choice)
-
-        for i in range(0,partition):
-            child.actions[i] = parent1.actions[i]
-        for i in range(partition, maxNum):
-            child.actions[i] = parent2.actions[i]
-
-        return self.mutation(child)
-
-    def crossover4(self, parent1, parent2):
-        child = MarioBrain()
-        choice = max(self.parent1Chromosome, self.parent2Chromosome)
-        partition = random.randint(0, choice)
-
-        for i in range(0,partition):
-            child.actions[i] = parent1.actions[i]
-        for i in range(partition, len(parent1.actions)):
-            child.actions[i] = parent2.actions[i]
-
-        return self.mutation(child)
-
-    '''
-
-    # new approaches (maybe)
-    def crossover1(self, parent1, parent2):
-        child = MarioBrain()
-        #select a chromosome to partition movements 
-        partitionChromose = random.randint(0, random.choice([self.parent1Chromosome-2, self.parent2Chromosome-2]))
-        for i in range(partitionChromose):
-            child.actions[i] = parent1.actions[i]
-        for i in range(partitionChromose+1, len(child.actions)):
-            child.actions[i] = parent2.actions[i]
-        return self.mutation(child)
-
-    def crossover2(self, parent1, parent2):
+    def crossover1(self):
         child = MarioBrain()
         for i in range(len(child.actions)):
             #one and one chromosome
             if i % 2 == 0:
-                child.actions[i] = parent1.actions[i]
+                child.actions[i][0] = self.parent1.actions[i][0]
             else:
-                child.actions[i] = parent2.actions[i]
+                child.actions[i][0] = self.parent2.actions[i][0]
         return self.mutation(child)
 
-    def nextGen2(self):
-        """ handles the crossover and generates new marios in the same functions.
-        Keeps 90 percent of the parent's chromosomes"""
-        newGen = []
-        for i in range(10):
-            child = MarioBrain()
-            parentChoice = random.choice(self.getParents())
-            partition = random.choice([self.parent1Chromosome, self.parent2Chromosome])
-            for i in range(partition-math.floor(0.10*partition)):
-                child.actions[i] = parentChoice.actions[i]
-            newGen.append(self.mutation(child))
-        return newGen
+    def crossover2(self):
+        child = MarioBrain()
+        minChrom = random.choice([int(self.parent1Chromosome * 0.85), int(self.parent2Chromosome * 0.85)])
+        for i in range(minChrom):
+            chroPar1Dis = self.parent1.actions[i][1]
+            chroPar2Dis = self.parent2.actions[i][1]
+            if chroPar1Dis > chroPar2Dis:
+                child.actions[i][0] =  self.parent1.actions[i][0]
+                child.actions[i][1] =  self.parent1.actions[i][1]
+            elif chroPar1Dis < chroPar2Dis:
+                child.actions[i][0] =  self.parent2.actions[i][0]
+                child.actions[i][1] =  self.parent2.actions[i][1]
+            else:
+                child.actions[i][0] =  random.choice([self.parent2.actions[i][0], self.parent2.actions[i][0],
+                                                      self.parent1.actions[i][0], self.parent1.actions[i][0],
+                                                      self.parent1.actions[i][0], self.parent1.actions[i][0],
+                                                      self.parent1.actions[i][0], random.randint(0, 10)])
+                #child.actions[i][1] =  random.choice([self.parent1.actions[i][1], self.parent2.actions[i][1]])
 
-    def nextGen3(self):
-        """ handles the crossover and generates new marios in the same function.
-        selects a parent who only Keeps 90 percent of the parent's chromosomes and selects a
-        partition chromosome"""
-        newGen = []
-        for i in range(10):
-            child = MarioBrain()
-            #parentChoice = random.choice(self.getParents())
-            #partition = random.choice([self.parent1Chromosome, self.parent2Chromosome])
-            partitionChromose = random.randint(0, random.choice([(self.parent1Chromosome - math.floor(0.10*self.parent1Chromosome)), (self.parent2Chromosome - math.floor(0.10*self.parent2Chromosome))]))
-            for i in range(partitionChromose):
-                child.actions[i] = self.parent1.actions[i]
-            for i in range(partitionChromose+1, len(child.actions)):
-                child.actions[i] = self.parent2.actions[i]
-            #for i in range(partition-math.floor(0.10*partition)):
-            #    child.actions[i] = parentChoice.actions[i]
-            newGen.append(self.mutation(child))
-        return newGen
+        
+            #else:
+            #    mutateBoo = random.randint(0,9)
+            #    if mutateBoo < 2 :
+            #        child.actions[i][0] = random.randint(0, 10)
+        
+
+        return child
 
 
     def mutation(self, child: MarioBrain):
         """Allows 10 chromosomes to be changed, but only 5 before the parent1
         chromosome/ movement when it died (parent 2 can have a higher chromosome pos)"""
-        limit = 0
         for i in range(3000):
             mutateBoo = random.randint(0,19)
-            if mutateBoo == 0 and limit < 5 and i < self.parent1Chromosome:
-                child.changeChromose(i)
-                limit += 1
-            elif  mutateBoo == 0 and limit < 10:
-                child.changeChromose(i)
-                limit += 1
+            if mutateBoo < 1:
+                child.actions[i][0] = random.randint(0, 10)
         return child
     
 
-    def computeNextGen(self, p1, p2):
+    def computeNextGen(self):
         """Computes a new generation of 5 Marios"""
         nextGen = []
-        for i in range(6):
-            child = self.crossover1(p1, p2)
+        for i in range(10):
+            child = self.crossover2()
             nextGen.append(child)
         return nextGen
 
@@ -196,7 +134,7 @@ testing.parent1Chromosome = 20
 testing.parent2 = brain2
 testing.parent2Chromosome = 30
 
-nextGen = testing.nextGen2()
+nextGen = testing.computeNextGen()
 
 print("---------------------")
 for i in nextGen:

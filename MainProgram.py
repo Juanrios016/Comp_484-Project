@@ -1,5 +1,5 @@
 import numpy as np
-from MarioBrain import MarioBrain
+from MarioBrain2 import MarioBrain
 from GenerateGeneration import GenerateGeneration
 from Enviroment import Environment
 
@@ -22,24 +22,24 @@ def main():
     mario8 = MarioBrain()
     mario9 = MarioBrain()
     mario10 = MarioBrain()
-    intitialPopualation = [mario1, mario2, mario3, mario4, mario5, mario6, mario7, mario8, mario9, mario10]
+    #intitialPopualation = [mario1, mario2, mario3, mario4, mario5, mario6, mario7, mario8, mario9, mario10]
     allscores = [] #for testing to se if fitness score improves for each generation
     
-    '''
-    mario1.loadActions("gen4.0\Gen22-mario1ActionsFS1333chrom313.txt")
-    mario2.loadActions("gen4.0\Gen22-mario2ActionsFS1298chrom319.txt")
-    for i in range(len(mario3.actions)):
-        if i < 1000:
-            mario3.actions[i] = mario1.actions [i]
-            mario4.actions[i] = mario2.actions [i]
-    parents.setParents(mario3, 1333, 313)
-    parents.setParents(mario4, 1298, 319)
+    #'''
+    mario1.loadActions("gen1.02DArrayGen113-mario1ActionsFS827chrom101.txt")
+    mario2.loadActions("gen1.02DArrayGen113-mario2ActionsFS827chrom78.txt")
+    #for i in range(len(mario3.actions)):
+    #    if i < 1000:
+    #        mario3.actions[i] = mario1.actions [i]
+    #        mario4.actions[i] = mario2.actions [i]
+    parents.setParents(mario1, 827, 101)
+    parents.setParents(mario2, 827, 78)
     parent1, parent2 = parents.getParents()
-    intitialPopualation = parents.nextGen3()
-    '''
+    intitialPopualation = parents.computeNextGen()
+    #'''
     env = Environment() # using only one enviroment to run enverything
     env.pyboy.set_emulation_speed(0) 
-    for l in range(250): # do 3 gen so far
+    for l in range(114, 350): # do 3 gen so far
         print("Generation: ", l)
         for p in range(10): # 5 agents for each gen
             
@@ -65,16 +65,16 @@ def main():
                 
                 state = np.asarray(env.mario.game_area())
                 state = np.reshape(state, [1, state_size])
-                
+                fitness = (env.mario.level_progress)
                 # ------ Rendering part -----#
                 i = 0
-                env.step(act)
+                env.step(act[0])
                 env.render(i, feet_val, env)
-                env.releaseStep(act)
+                env.releaseStep(act[0])
                 env.render(i, feet_val, env)
-                lastPos = env.mario._level_progress_max
                 #position = env.mario.level_progress # for testing
-                fitness = (env.mario._level_progress_max)# for testing
+                # for testing
+                actions[actNum][1] = env.mario.level_progress
                 actNum += 1
 
             parents.setParents(currMario, fitness, actNum)
@@ -86,7 +86,7 @@ def main():
 
 
         parent1, parent2 = parents.getParents()
-        intitialPopualation = parents.nextGen3()
+        intitialPopualation = parents.computeNextGen()
 
         # saves parentss from each gen
         parent1.saveActions("Gen"+str(l)+"-mario1ActionsFS"+str(parents.parent1Fitness) + "chrom" + str(parents.parent1Chromosome)  + ".txt") # for testing
