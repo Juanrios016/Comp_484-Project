@@ -24,17 +24,11 @@ class MarioBrain():
 
     def saveActions(self, fileName):
         """Saves the actions array to a file"""
-        np.savetxt('gene2-2DArray/'+fileName, self.actions, fmt='%d', delimiter=',')
+        np.savetxt(fileName, self.actions, fmt='%d', delimiter=',')
 
     def loadActions(self, fileName):
         """Loads the actions array from a file"""
         self.actions = np.loadtxt(fileName, delimiter=',')
-
-    def getDistance(self, pos):
-        return self.actions[pos][1]
-
-    def setDistance(self, pos, dist):
-        self.actions[pos][1] = dist 
     
     
     
