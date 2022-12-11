@@ -2,6 +2,8 @@ import math
 from MarioBrain import MarioBrain
 import random
 import numpy as np
+from numpy.random import choice
+
 
 possibleActions = [0,   1,   2,   3,   4,   5,   6,   7,   8,   9,   10 ]
 rightWeighted =   [.10, .14, .02, .03, .33, .10, .03, .02, .02, .01,  .20]
@@ -80,11 +82,12 @@ class GenerateGeneration:
                 child.actions[i][0] =  self.parent2.actions[i][0]
                 child.actions[i][1] =  self.parent2.actions[i][1]
             else:
-                #weighted parent 1 more because we want more child like it. Mostly for cases where position is the same
-                child.actions[i][0] =  random.choice([self.parent1.actions[i][0],
-                                                        self.parent2.actions[i][0], 
-                                                        np.random.choice(possibleActions, p=rightWeighted)],
-                                                        1, p=(0.6, 0.3, 0.1))
+                #weighted parent 1 more because we want more child like them. Mostly for cases where position is the same
+                child.actions[i][0] =  random.choice([self.parent1.actions[i][0], self.parent1.actions[i][0],
+                                                    self.parent1.actions[i][0], self.parent1.actions[i][0],
+                                                    self.parent1.actions[i][0],self.parent1.actions[i][0],
+                                                    self.parent2.actions[i][0], self.parent2.actions[i][0],
+                                                    self.parent2.actions[i][0], np.random.choice(possibleActions, 1, p=rightWeighted)])
         
         return self.mutate(child, lastChrom)
 
