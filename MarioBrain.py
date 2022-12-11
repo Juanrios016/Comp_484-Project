@@ -17,8 +17,8 @@ class MarioBrain():
         """Creates an array of size 1000 with integers between 0 and 15 inclusive
         that represents the different movements for Mario"""
         self.actions = np.arange(actionSize) #array that holds Mario movements
-        # self.actions = np.random.choice(possibleActions, actionSize, p=rightWeighted) #randomly assigns actions to the array
-        self.actions = np.random.choice(onlyMoveRight, actionSize, p=onlyMoveRightWeighted) #randomly assigns actions to the array
+        self.actions = np.random.choice(possibleActions, actionSize, p=rightWeighted) #randomly assigns actions to the array
+        # self.actions = np.random.choice(onlyMoveRight, actionSize, p=onlyMoveRightWeighted) #randomly assigns actions to the array
     def get_actions(self):
         """Returns an array of integers between 0 and 15 inclusive"""
         return self.actions

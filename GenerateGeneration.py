@@ -2,7 +2,7 @@ from MarioBrain import MarioBrain
 import random
 import numpy as np
 
-mutationChance = 0.25
+mutationChance = 0.3
 possibleActions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 onlyMoveRight = [1, 4, 5]
 onlyMoveRightWeighted = [.2, .6, .2]
@@ -108,6 +108,7 @@ class GenerateGeneration:
     def crossover80Percent(self, parent1, parent2):
         child = MarioBrain()
         choice = random.choice([self.parent1Chromosome, self.parent2Chromosome])
+        
         percentInt = int(choice * 0.8)
         for i in range(0, percentInt):
             child.actions[i] = parent1.actions[i]

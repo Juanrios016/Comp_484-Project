@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import matplotlib.pyplot as plt
 import time
 from MarioBrain import MarioBrain
 from GenerateGeneration import GenerateGeneration
@@ -21,6 +23,8 @@ def individualEnvBehavior():
 def main():
     parents = GenerateGeneration()
     trials = [] # for testing
+    plotDataGenerations = []
+    plotDataHighestPosition = []
     marioNumber = 0 # current Mario -for testing
     mario1 = MarioBrain()
     mario2 = MarioBrain()
@@ -43,6 +47,9 @@ def main():
     while env.mario.world == (1, 1):
         print("========================================")
         print("Generation: ", generation)
+        plotDataGenerations.append(generation)
+        marioNumberArrayPlot = []
+        marioPositionPlotData = []
         for p in range(10): # 5 agents for each gen
             # print("Mario: ", p)
             fitness = 0
@@ -82,27 +89,53 @@ def main():
                 # env.pyboy.tick() # for testing # for testing
                 actNum += 1
                 fitness = env.mario.level_progress
-            currMario.saveActions("marioActions" + str(marioNumber) + ".txt") # for testing
+                
+            #check if directory exists
+            if not os.path.exists("MarioData\Generation " + str(generation)):  
+                os.makedirs("MarioData\Generation " + str(generation))
+            currMario.saveActions("MarioData\Generation " + str(generation) + "\marioActions" + str(marioNumber) + ".txt") # for testing
+            if not os.path.exists("PlotDataOutput\MarioInGenerationPlots"):
+                os.makedirs("PlotDataOutput\MarioInGenerationPlots")
             # print("fitness: ", fitness) # for testing
             # print("position: ", env.mario.level_progress) # for testing
+            marioNumberArrayPlot.append(marioNumber)
+            marioPositionPlotData.append(fitness)
             marioNumber +=1 # for testing
             trials.append([marioNumber, actions, fitness, actNum])# for testing
             parents.setParents(currMario, fitness, actNum)
             # parents.setBestParent(currMario, fitness, actNum)
             state = env.reset()
-
-
-
+        
+        plt.plot(marioNumberArrayPlot, marioPositionPlotData)
+        plt.xlabel("Current Mario")
+        plt.ylabel("Position Reached")
+        plt.title("Mario Variation in Generation " + str(generation))
+        plt.savefig("PlotDataOutput\MarioInGenerationPlots\Generation " + str(generation))
+        plt.clf()
+        marioPositionPlotData = []
+        marioNumberArrayPlot = []
+        marioNumber = 0
         parent1, parent2 = parents.getParents()
         intitialPopualation = parents.mutateComputeNextGen(parent1, parent2)
-        # print(parents.getFitnessScores(), "parent 1 chromosome pos: ", parents.parent1Chromosome, " parent 2 chromosome pos: ", parents.parent2Chromosome)
-        print("Best Parent: ", parents.bestParentFitness, "Best Parent Chromosome: ", parents.bestParentChromosome)
+        print(parents.getFitnessScores(), "parent 1 chromosome pos: ", parents.parent1Chromosome, " parent 2 chromosome pos: ", parents.parent2Chromosome)
+        plotDataHighestPosition.append(max(parents.getFitnessScores()))
+        # print("Best Parent: ", parents.bestParentFitness, "Best Parent Chromosome: ", parents.bestParentChromosome)
         # for trial in trials: # for testing
             # print(trial[0], trial[2], trial[3])
         # allscores.append([parents.bestParentFitness, parents.bestParentChromosome]) # for testing
         # Appending the fitness score and chromosome of the parents to a list.
         allscores.append([parents.parent1Fitness, parents.parent1Chromosome, parents.parent2Fitness, parents.parent2Chromosome]) # for testing
         # parents.resetParents()
+        if not os.path.exists("PlotDataOutput\GrowthPerGenerationPlots"):
+            os.makedirs("PlotDataOutput\GrowthPerGenerationPlots")
+        if generation > 5:
+            plt.plot(plotDataGenerations, plotDataHighestPosition)
+        plt.xlabel("Generations")
+        plt.ylabel("Distance")
+        plt.title("Max distance reached in each generation")
+        plt.savefig("PlotDataOutput\GrowthPerGenerationPlots\GenerationVsDistancePlot" + str(generation) + ".png")
+        plt.clf()
+        
         generation += 1
         print(allscores) # for testing
         print("---------------------------------------------")
